@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import { BrowserRouter } from 'react-router-dom'
 import registerServiceWorker from './registerServiceWorker'
 import routes from './routes'
-import './App.css'
+
 
 // Dispatcher
 import AppDispatcher from './Dispatcher/AppDispatcher'

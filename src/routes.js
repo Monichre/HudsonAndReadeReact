@@ -9,9 +9,8 @@ import AppStore from './Stores/AppStore'
 // Pages
 import App from './App'
 import Home from './Components/Pages/Home'
-import Portfolio from './Components/Pages/Portfolio'
+import Blog from './Components/Pages/Blog'
 import About from './Components/Pages/About'
-import FAQ from './Components/Pages/FAQ'
 import Contact from './Components/Pages/Contact'
 
 let routes_with_sub = [
@@ -25,14 +24,9 @@ let routes_with_sub = [
         component: About
     },
 	{
-		path: '/portfolio',
-		component: Portfolio
+		path: '/blog',
+		component: Blog
 	},
-	{
-        path: '/faq',
-		exact: true,
-        component: FAQ
-    },
 	{
 		path: '/contact',
 		component: Contact
