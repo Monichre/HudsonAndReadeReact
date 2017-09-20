@@ -3,8 +3,8 @@ import React, { Component } from 'react'
 export default class Footer extends Component {
     render() {
         return (
-            <div>
-
+            <div className="row">
+                
                 <section className="newsletter">
                     <div className="container">
                         <div className="section-wrapper col-xs-12">
@@ -29,7 +29,7 @@ export default class Footer extends Component {
                 </section>
     
 
-                <div className="clear"></div>
+                
 
                 <footer>
                     <div className="container">

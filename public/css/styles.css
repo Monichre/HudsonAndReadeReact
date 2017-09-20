@@ -1,28 +1,39 @@
-/*-----------------------------------------------------------------------------------
-        Template Name: Best
-        Author: Damian Komonski (htt://www.prestahome.com)
-        Version: 1.0
------------------------------------------------------------------------------------*/
-/*-----------------------------------------------------------------------------------
+/*!
+Theme Name: houston-reade
 
-[CONTENT]
+Author: Liam Ellis
+Author URI: lovecraft.io
+Description: Custom Blog
+Version: 1.0.0
+License: GNU General Public License v2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: houston-reade
+Tags:
 
-1. Default Styles
----1.1 Buttons
----1.2 Forms
-2. Body
----2.1 Header
----2.2 Slider
----2.3 Gallery
----2.4 Blog
-------2.4.1 Article Preview
----2.5 Newsletter
----2.6 Footer
----2.7 Overlay Navigation
----2.8 About Me
-3. External styles
----3.1 Typed.js
 
+*/
+/*--------------------------------------------------------------
+>>> TABLE OF CONTENTS:
+----------------------------------------------------------------
+# Normalize
+# Typography
+# Elements
+# Forms
+# Navigation
+	## Links
+	## Menus
+# Accessibility
+# Alignments
+# Clearings
+# Widgets
+# Content
+	## Posts and pages
+	## Comments
+# Infinite scroll
+# Media
+	## Captions
+  ## Galleries
+  
 -----------------------------------------------------------------------------------*/
 /*-------------------------------------- 1. Default Styles --------------------------------------*/
 @import url(https://fonts.googleapis.com/css?family=Raleway:400,800,500,700&subset=latin,latin-ext);
@@ -622,6 +633,7 @@ header {
       .article-preview .article-preview-left-image {
         padding-right: 15px; } }
     .article-preview .article-preview-left-image .article-preview-left-image-content {
+      max-height:500px;
       height: 100%; }
       @media (min-width: 768px) and (max-width: 991px) {
         .article-preview .article-preview-left-image .article-preview-left-image-content {
@@ -670,6 +682,7 @@ header {
       .article-preview .article-preview-right-image {
         padding-left: 15px; } }
     .article-preview .article-preview-right-image .article-preview-right-image-content {
+      max-height: 500px;
       height: 100%; }
       @media (min-width: 768px) and (max-width: 991px) {
         .article-preview .article-preview-right-image .article-preview-right-image-content {
@@ -699,7 +712,8 @@ header {
           left: -46px; } }
       .article-preview .article-preview-right-image .article-preview-right-image-content img {
         width: 100%;
-        height: auto;
+        object-fit: contain;
+        height: 100%;
         transition: opacity .4s; }
         @media (min-width: 768px) and (max-width: 991px) {
           .article-preview .article-preview-right-image .article-preview-right-image-content img {
@@ -715,9 +729,12 @@ header {
       .article-preview .article-preview-content {
         margin: 15px 0; } }
     .article-preview .article-preview-content .article-preview-content-vertical-align {
-      display: table-cell;
-      vertical-align: middle;
-      float: none; }
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      height: 100%;
+      padding: 0 30px;
+    }
       .article-preview .article-preview-content .article-preview-content-vertical-align h1 {
         font-size: 24px;
         letter-spacing: 4px;
@@ -1504,3 +1521,20 @@ footer {
   width: 50px;
   height: 5px;
 }
+
+
+.article-preview .article-preview-content .article-preview-content-vertical-align {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+  padding: 0 30px;
+}
+.article-preview .article-preview-right-image .article-preview-right-image-content img, .article-preview .article-preview-left-image .article-preview-left-image-content img  {
+  width: 100%;
+  object-fit: cover;
+  max-height: 500px;
+  height: 100%;
+  
+}
+

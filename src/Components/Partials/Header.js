@@ -1,7 +1,17 @@
 import React, { Component } from 'react'
 
 export default class Header extends Component {
+
+    componentDidMount(){
+        
+    }
+    
+
     render() {
+        const hero_image = this.props.data.globals.hero_image
+        const header_style = {
+            backgroundImage: `url(${hero_image})`
+        }
         return (
             <div>
                 <div id="nav_overlay" className="menu_overlay">
@@ -79,6 +89,21 @@ export default class Header extends Component {
                         </div>
                     </div>
                 </header>
+                <section className="full_slider full_slider_skew" style={header_style} data-rjs="2">
+                    <div className="full_slider_bg_skew"></div>
+                    <div className="full_slider_one full_slider_one_white">
+                        <div className="container">
+                            <div className="row">
+                                <div className="col-xs-12">
+                                    <h2><span id="slider-animation"></span></h2>
+                                    <h1>Hudson + Reade</h1>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </section>
             </div>
 
         )

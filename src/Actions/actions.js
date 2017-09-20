@@ -18,6 +18,11 @@ export function getStore(callback) {
         /* Globals
         ======================== */
         let globals = AppStore.data.globals
+
+        console.log(globals)
+        globals.hero_image = response.object['hero-image'].metadata.photo.url
+
+
         globals.text = response.object['text']
         let metafields = globals.text.metafields
         let menu_title = _.find(metafields, {
@@ -71,27 +76,14 @@ export function getStore(callback) {
         articles = _.sortBy(articles, 'order')
         AppStore.data.articles = articles
 
+        console.log(articles)
+
         let POSTS = {}
 
-        articles.forEach(function(article) {
-            if (article.metadata != null && article.metadata.category != null) {
-                var new_key = article.metadata.category.slug
-                // for (key in POSTS){
-                // 	if (POSTS)
-                // }
-                if (POSTS.hasOwnProperty(new_key)) {
-
-                    POSTS[article.metadata.category.slug].push(article)
-                } else {
-                    POSTS[article.metadata.category.slug] = []
-                    POSTS[article.metadata.category.slug].push(article)
-                }
-            } else {}
-        });
-
-        AppStore.data.posts = POSTS
+     
         // Emit change
         AppStore.data.ready = true
+        console.log(AppStore.data)
         AppStore.emitChange()
 
         // Trigger callback (from server)
