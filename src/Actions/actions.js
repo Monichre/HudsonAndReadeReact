@@ -1,124 +1,83 @@
-// actions.js
-
-import Cosmic from 'cosmicjs'
+import * as Contentful from 'contentful'
 import _ from 'lodash'
-
-// AppStore
 import AppStore from '../Stores/AppStore'
+
 var config = require('../config').config
 
 export function getStore(callback) {
 
-    let pages = {}
-
-    Cosmic.getObjects(config, function(err, response) {
-
-        let objects = response.objects
-
-        /* Globals
-        ======================== */
-        let globals = AppStore.data.globals
-
-        console.log(globals)
-        globals.hero_image = response.object['hero-image'].metadata.photo.url
-
-
-        globals.text = response.object['text']
-        let metafields = globals.text.metafields
-        let menu_title = _.find(metafields, {
-            key: 'menu-title'
-        })
-
-
-        globals.text.menu_title = menu_title.value
-
-        let footer_text = _.find(metafields, {
-            key: 'footer-text'
-        })
-        globals.text.footer_text = footer_text.value
-
-        let site_title = _.find(metafields, {
-            key: 'site-title'
-        })
-        globals.text.site_title = site_title.value
-
-        // Social
-        globals.social = response.object['social']
-        metafields = globals.social.metafields
-        let twitter = _.find(metafields, {
-            key: 'twitter'
-        })
-        globals.social.twitter = twitter.value
-        let facebook = _.find(metafields, {
-            key: 'facebook'
-        })
-        globals.social.facebook = facebook.value
-        let github = _.find(metafields, {
-            key: 'github'
-        })
-        globals.social.github = github.value
-
-        // Nav
-        const nav_items = response.object['nav'].metafields
-
-        globals.nav_items = nav_items
-
-        AppStore.data.globals = globals
-
-        /* Pages
-        ======================== */
-        let pages = objects.type.page
-        AppStore.data.pages = pages
-
-        /* Articles
-        ======================== */
-        let articles = objects.type['post']
-        articles = _.sortBy(articles, 'order')
-        AppStore.data.articles = articles
-
-        console.log(articles)
-
-        let POSTS = {}
-
-     
-        // Emit change
-        AppStore.data.ready = true
-        console.log(AppStore.data)
-        AppStore.emitChange()
-
-        // Trigger callback (from server)
-        if (callback) {
-            callback(false, AppStore)
-        }
-
+    
+    const cms_client = Contentful.createClient({
+        space: config.auth.space,
+        accessToken: config.auth.accessToken
     })
+
+    cms_client.getEntries()
+        .then((response) => {
+
+            let response_items = response.items
+
+            let pages = _.filter(response_items, (item) => item.sys.contentType.sys.id === 'page')
+            let section_headers = _.filter(response_items, (item) => item.sys.contentType.sys.id === 'sectionHeader')
+            let polaroids = _.filter(response_items, (item) => item.sys.contentType.sys.id === 'polaroid')
+            let video_entries = _.filter(response_items, (item) => item.sys.contentType.sys.id === 'videoPost')
+            let affiliate_entries = _.filter(response_items, (item) => item.sys.contentType.sys.id === 'affiliatePost')
+            let articles =  _.filter(response_items, (item) => item.sys.contentType.sys.id === 'blogPost')
+            articles = _.sortBy(articles, (article) => article.sys.createdAt)
+            let nav_items = _.map(pages, (page) => page.fields.title)
+            nav_items = nav_items.sort().reverse()
+
+  
+            AppStore.data.featured = _.sortBy(articles, (article) => article.sys.createdAt).slice(0, 3)
+            AppStore.data.fashion = _.filter(articles, (article) => article.fields.category[0].fields.title === 'Fashion Posts')
+            AppStore.data.travel = _.filter(articles, (article) => article.fields.category[0].fields.title === 'Travel Posts')
+            AppStore.data.health = _.filter(articles, (article) => article.fields.category[0].fields.title === 'Health Posts')
+       
+            AppStore.data.polaroids = polaroids
+            AppStore.data.section_headers = section_headers
+            AppStore.data.articles = articles
+            AppStore.data.nav_items = nav_items
+            AppStore.data.video_entries = video_entries
+            AppStore.data.affiliate_entries = affiliate_entries
+            AppStore.data.pages = pages
+
+   
+            
+            AppStore.data.ready = true
+            AppStore.emitChange()
+            
+            
+            if (callback) {
+                callback(false, AppStore)
+            }
+        })
+
 }
 
 export function getPageData(page_slug, post_slug) {
 
-    if (!page_slug || page_slug === 'blog')
-        page_slug = 'home'
-
-    // Get page info
+    if (!page_slug || page_slug === 'blog'){
+        page_slug = 'Home'
+    }
+        
     const data = AppStore.data
     const pages = data.pages
-    const page = _.find(pages, {
-        slug: page_slug
-    })
-
-
+    const page = _.find(pages, (page) => page.fields.title === page_slug)
+ 
 	let article
-	const articles = data.articles
+    const articles = data.articles
+    if (data.video_entries){
+        data.video_entries.forEach(entry => articles.push(entry))
+    }
+    if (data.affiliate_entries){
+        data.affiliate_entries.forEach(entry => articles.push(entry))
+    }
     if (post_slug) {
-		console.log(post_slug)
-		article = _.find(articles, {
-			slug: post_slug
-		})
-		page.title = article.title
+		
+        article = _.find(articles, (article) => article.fields.title === post_slug)
 		AppStore.data.article = article
     }
 
-	console.log(AppStore.data)
     AppStore.data.page = page
     AppStore.emitChange()
 }
