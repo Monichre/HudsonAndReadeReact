@@ -1,5 +1,5 @@
 
-import React, { Component } from 'react'
+import React, { Component } from 'react' 
 import { BrowserRouter } from 'react-router-dom'
 import registerServiceWorker from './registerServiceWorker'
 import routes from './routes'
@@ -55,6 +55,8 @@ class App extends Component {
 
 	render() {
 		const data = AppStore.data
+		console.log(data)
+		// const page = AppStore.data.page
 		if(!data.ready){
 		      this.getStore()
 
@@ -65,7 +67,7 @@ class App extends Component {
 			return (
 				<BrowserRouter>
 					<div>
-						<Header data={data} />
+						<Header data={data}/>
 						{routes}
 						<Footer data={data} />
 					</div>

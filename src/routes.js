@@ -12,6 +12,12 @@ import Home from './Components/Pages/Home'
 import Blog from './Components/Pages/Blog'
 import About from './Components/Pages/About'
 import Contact from './Components/Pages/Contact'
+import NewYork from './Components/Pages/NewYork'
+import Travel from './Components/Pages/Travel'
+import Style from './Components/Pages/Style'
+import Wedding from './Components/Pages/Wedding'
+import Wellness from './Components/Pages/Wellness'
+import Shop from './Components/Pages/Shop'
 
 let routes_with_sub = [
     {
@@ -26,6 +32,30 @@ let routes_with_sub = [
 	{
 		path: '/blog',
 		component: Blog
+    },
+    {
+		path: '/style',
+		component: Style
+    },
+    {
+		path: '/travel',
+		component: Travel
+    },
+    {
+		path: '/wellness',
+		component: Wellness
+    },
+    {
+		path: '/shop',
+		component: Shop
+    },
+    {
+		path: '/newyork',
+		component: NewYork
+    },
+    {
+		path: '/wedding',
+		component: Wedding
 	},
 	{
 		path: '/contact',

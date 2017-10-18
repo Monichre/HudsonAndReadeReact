@@ -16,29 +16,27 @@ export function getStore(callback) {
         .then((response) => {
 
             let response_items = response.items
-
+            console.log(response_items)
+            
             let pages = _.filter(response_items, (item) => item.sys.contentType.sys.id === 'page')
-            let section_headers = _.filter(response_items, (item) => item.sys.contentType.sys.id === 'sectionHeader')
-            let polaroids = _.filter(response_items, (item) => item.sys.contentType.sys.id === 'polaroid')
-            let video_entries = _.filter(response_items, (item) => item.sys.contentType.sys.id === 'videoPost')
-            let affiliate_entries = _.filter(response_items, (item) => item.sys.contentType.sys.id === 'affiliatePost')
+            console.log(pages)
+          
             let articles =  _.filter(response_items, (item) => item.sys.contentType.sys.id === 'blogPost')
             articles = _.sortBy(articles, (article) => article.sys.createdAt)
-            let nav_items = _.map(pages, (page) => page.fields.title)
-            nav_items = nav_items.sort().reverse()
+            console.log(articles)
+            let nav_items = _.map(pages, (page) => page.fields.title.replace(/ /g, '').toLowerCase())
+            
 
   
-            AppStore.data.featured = _.sortBy(articles, (article) => article.sys.createdAt).slice(0, 3)
-            AppStore.data.fashion = _.filter(articles, (article) => article.fields.category[0].fields.title === 'Fashion Posts')
-            AppStore.data.travel = _.filter(articles, (article) => article.fields.category[0].fields.title === 'Travel Posts')
-            AppStore.data.health = _.filter(articles, (article) => article.fields.category[0].fields.title === 'Health Posts')
+            // AppStore.data.featured = _.sortBy(articles, (article) => article.sys.createdAt).slice(0, 3)
+            // AppStore.data.fashion = _.filter(articles, (article) => article.fields.category[0].fields.title === 'Fashion Posts')
+            // AppStore.data.travel = _.filter(articles, (article) => article.fields.category[0].fields.title === 'Travel Posts')
+            // AppStore.data.health = _.filter(articles, (article) => article.fields.category[0].fields.title === 'Health Posts')
        
-            AppStore.data.polaroids = polaroids
-            AppStore.data.section_headers = section_headers
+            
+            
             AppStore.data.articles = articles
             AppStore.data.nav_items = nav_items
-            AppStore.data.video_entries = video_entries
-            AppStore.data.affiliate_entries = affiliate_entries
             AppStore.data.pages = pages
 
    
@@ -63,15 +61,16 @@ export function getPageData(page_slug, post_slug) {
     const data = AppStore.data
     const pages = data.pages
     const page = _.find(pages, (page) => page.fields.title === page_slug)
+    console.log(page)
  
 	let article
     const articles = data.articles
     if (data.video_entries){
         data.video_entries.forEach(entry => articles.push(entry))
     }
-    if (data.affiliate_entries){
-        data.affiliate_entries.forEach(entry => articles.push(entry))
-    }
+    // if (data.affiliate_entries){
+    //     data.affiliate_entries.forEach(entry => articles.push(entry))
+    // }
     if (post_slug) {
 		
         article = _.find(articles, (article) => article.fields.title === post_slug)

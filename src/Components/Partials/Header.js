@@ -1,17 +1,46 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react' 
+import {Link} from 'react-router-dom'
+
+import AppStore from '../../Stores/AppStore'
+import AppDispatcher from '../../Dispatcher/AppDispatcher' 
 
 export default class Header extends Component {
 
     componentDidMount(){
         
     }
+    componentWillMount(){
+        this.getPageData()
+    }
+    getPageData() {
+		AppDispatcher.dispatch({
+			action: 'get-page-data',
+			  page_slug: this.props.data.page
+			
+		})
+	}
+
     
 
     render() {
-        const hero_image = this.props.data.globals.hero_image
-        const header_style = {
-            backgroundImage: `url(${hero_image})`
+        
+        
+        const navItems = this.props.data.nav_items.map((navItem) => {
+            return <li><Link to={`/${navItem}`}>{navItem}</Link></li>            
+        })
+        const nav_style = {
+            textAlign: 'center'
         }
+        const data = AppStore.data
+        console.log(data)
+        const page = data.page
+        console.log(page)
+
+
+        const header_style = {
+            backgroundImage: 'url(' + page.fields.mainPhoto.fields.file.url + ')'
+        }
+
         return (
             <div>
                 <div id="nav_overlay" className="menu_overlay">
@@ -34,11 +63,7 @@ export default class Header extends Component {
                                 <div className="col-xs-12">
                                     <nav>
                                         <ul>
-                                            <li className="active"><a href="index.html" title="Start">Home</a></li>
-                                            <li><a href="gallery-categories.html" title="Photos">Photos</a></li>
-                                            <li><a href="blog.html" title="Blog">Blog</a></li>
-                                            <li><a href="contact.html" title="Contact">Contact</a></li>
-                                            <li><a href="about.html" title="About me">About me</a></li>
+                                        {navItems}
                                         </ul>
                                     </nav>
                                 </div>
@@ -67,14 +92,10 @@ export default class Header extends Component {
                                     </ul>
                                 </nav>
                             </div>
-                            <div className="col-xs-6 mobile-nav-main">
+                            <div className="col-xs-12 mobile-nav-main">
                                 <nav>
-                                    <ul>
-                                        <li className=""><a href="index.html" title="Start">Home</a></li>
-                                        <li><a href="gallery-categories.html" title="Photos">Photos</a></li>
-                                        <li><a href="blog.html" title="Blog">Blog</a></li>
-                                        <li><a href="contact.html" title="Contact">Contact</a></li>
-                                        <li><a href="about.html" title="About me">About me</a></li>
+                                    <ul style={nav_style}>
+                                       {navItems}
                                     </ul>
                                 </nav>
                             </div>

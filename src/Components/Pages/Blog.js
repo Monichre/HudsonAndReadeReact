@@ -1,4 +1,7 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react' 
+import AppDispatcher from '../../Dispatcher/AppDispatcher' 
+
+
 import BlogPreviewLeft from '../Blog/BlogPreviewLeft'
 import BlogPreviewRight from '../Blog/BlogPreviewRight'
 import _ from 'lodash'
