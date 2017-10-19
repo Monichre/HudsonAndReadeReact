@@ -13,6 +13,7 @@ import AppStore from './Stores/AppStore'
 
 import Header from './Components/Partials/Header'
 import Footer from './Components/Partials/Footer'
+import './App.css'
 
 
 

@@ -19,12 +19,17 @@ export function getStore(callback) {
             console.log(response_items)
             
             let pages = _.filter(response_items, (item) => item.sys.contentType.sys.id === 'page')
+            let nav_items = _.map(pages, (page) => page.fields.title.replace(/ /g, '').toLowerCase())
             console.log(pages)
           
             let articles =  _.filter(response_items, (item) => item.sys.contentType.sys.id === 'blogPost')
-            articles = _.sortBy(articles, (article) => article.sys.createdAt)
+            articles = articles.sort(function(a,b){
+                return Date.UTC(new Date(a.sys.createdAt)) - Date.UTC(new Date(b.sys.createdAt))
+            })
             console.log(articles)
-            let nav_items = _.map(pages, (page) => page.fields.title.replace(/ /g, '').toLowerCase())
+
+            AppStore.data.featured = articles.slice(0, 3)
+            
             
 
   
